@@ -1,0 +1,83 @@
+#include <kipr/botball.h>
+ 
+//Declare Variables
+int speed = 40;
+int lmotor = 2; //left motor port 2
+int rmotor = 0; //right motor port 0
+int leftbump = 1; //left bump sensor port 1
+int rightbump = 3; //right bump sensor port 3
+int counter = 0;
+//Function Prototypes//
+void forward(); //Robot's forward function
+void backward(); //Robot's backward function
+void left (); //Robot's left function
+void right (); //Robot's right function
+void evasive(); //Robot's escaping trouble function
+ 
+int main() {
+printf("Dwelling the Forest\n");
+ shut_down_in(300); //Robot shuts down after 5 minutes
+ while (1)
+{
+  forward();
+  
+if (digital(leftbump) == 1) //if left bump is pressed do this
+ 
+{
+  backward();
+  right();
+  counter++; //add one to counter
+}
+if (digital(rightbump) == 1) //if right bump is pressed do this
+{
+  backward();
+  left();
+  counter++; //add one to counter
+}
+if (counter == 6) //if counter = 6 do evasive movement
+{
+  evasive();
+  counter = 0; //reset counter
+}
+}
+}
+//Function Definitions
+void forward() //forward function
+{
+//  printf("forward\n"); //prints "forward"
+motor(lmotor,speed);
+motor(rmotor,speed);
+}
+ 
+void backward() //backward function
+{
+printf("backward\n"); //prints "backkward"
+motor(lmotor,-speed);
+motor(rmotor,-speed);
+msleep(1500); //continue for 1500 seconds
+}
+ 
+void left() //left function
+{
+printf("left\n"); //prints "left"
+motor(lmotor,speed);
+motor(rmotor,-speed);
+msleep(1000); //continue for 1000 seconds
+}
+ 
+void right() //right function
+{
+printf("right\n"); //prints "right"
+motor(lmotor,-speed);
+motor(rmotor,speed);
+msleep(1000); //continue for 1000 seconds
+}
+ 
+void evasive() //evasive function
+{
+printf("evasive\n"); //prints "evasive"
+backward();
+msleep(1500); //continue for 1500 seconds
+left();
+msleep(1700); //continue for 1700 seconds
+}
